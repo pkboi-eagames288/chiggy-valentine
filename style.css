@@ -155,3 +155,66 @@ button {
     background: rgba(255, 77, 109, 0.15);
     font-weight: 600;
 }
+
+/* Responsive scaling for mobile & tablets */
+@media (max-width: 768px) {
+    body {
+        zoom: 1;
+    }
+
+    .container {
+        transform: scale(1);
+        padding: 16px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    #cat {
+        font-size: 48px;
+    }
+}
+
+/* Slight emoji boost on mobile */
+@media (max-width: 768px) {
+    #cat {
+        font-size: 56px; /* was ~48px */
+    }
+}
+
+/* Reduce gap between YAY text and image */
+#question {
+    margin-bottom: 8px;
+}
+
+#message {
+    margin-bottom: 6px;
+}
+
+#yayImage {
+    margin-top: 10px; /* was likely 20px+ */
+}
+
+/* Tighten spacing after YES (all devices) */
+#question {
+    margin-bottom: 6px;
+}
+
+#message {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+#yayImage {
+    margin-top: 8px;
+}
