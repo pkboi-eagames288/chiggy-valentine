@@ -1,0 +1,15 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <circle cx="100" cy="110" r="60" fill="#f4c7ab"></circle>
+
+  <!-- Ears -->
+  <polygon id="earLeft" points="60,40 80,20 90,50" fill="#f4c7ab"></polygon>
+  <polygon id="earRight" points="140,40 120,20 110,50" fill="#f4c7ab"></polygon>
+
+  <!-- Eyes -->
+  <ellipse id="eyeLeft" cx="80" cy="95" rx="8" ry="10" fill="#333"></ellipse>
+  <ellipse id="eyeRight" cx="120" cy="95" rx="8" ry="10" fill="#333"></ellipse>
+
+  <!-- Mouth -->
+  <path id="mouth" d="M90 120 Q100 130 110 120" stroke="#333" stroke-width="3" fill="none"></path>
+</svg>
