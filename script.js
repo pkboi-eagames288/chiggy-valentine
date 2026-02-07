@@ -1,3 +1,6 @@
+/* =========================
+   ELEMENTS
+========================= */
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const yesHint = document.getElementById("yesHint");
@@ -12,27 +15,16 @@ const valentineWeek = document.getElementById("valentineWeek");
 const tomorrowNote = document.getElementById("tomorrowNote");
 
 /* =========================
-   IST DATE LOGIC
+   IST DATE (SAFE)
 ========================= */
 function getISTDate() {
-    const now = new Date();
-    const istOffset = 5.5 * 60 * 60 * 1000;
-    return new Date(now.getTime() + istOffset);
+    return new Date(
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    );
 }
 
-const today = getISTDate();
-const dayNames = [
-    "Sunday", "Monday", "Tuesday", "Wednesday",
-    "Thursday", "Friday", "Saturday"
-];
-
-const todayName = dayNames[today.getDay()];
-const todayDate = today.toDateString();
-
-dayWish.innerHTML = `Happy ${todayName}!, Veda 💖<br><small>${todayDate} (IST)</small>`;
-
 /* =========================
-   VALENTINE DAY DETECTION
+   VALENTINE DAYS
 ========================= */
 const valentineDays = [
     { date: "02-07", name: "Rose Day", emoji: "🌹" },
@@ -45,28 +37,69 @@ const valentineDays = [
     { date: "02-14", name: "Valentine’s Day", emoji: "❤️" }
 ];
 
-// Format today as MM-DD
-const mm = String(today.getMonth() + 1).padStart(2, "0");
-const dd = String(today.getDate()).padStart(2, "0");
-const todayKey = `${mm}-${dd}`;
+/* =========================
+   UPDATE DAY CONTENT
+========================= */
+function updateDayContent() {
+    const today = getISTDate();
 
-let todayValentine = null;
+    const dayNames = [
+        "Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday"
+    ];
 
-valentineWeek.innerHTML = valentineDays.map(d => {
-    if (d.date === todayKey) {
-        todayValentine = d;
-        return `<div class="today">${d.emoji} ${d.name} — TODAY</div>`;
+    const todayName = dayNames[today.getDay()];
+    const todayDate = today.toDateString();
+
+    dayWish.innerHTML =
+        `Happy ${todayName}!, Veda 💖<br><small>${todayDate} (IST)</small>`;
+
+    // MM-DD
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    const todayKey = `${mm}-${dd}`;
+
+    let todayValentine = null;
+
+    valentineWeek.innerHTML = valentineDays.map(d => {
+        if (d.date === todayKey) {
+            todayValentine = d;
+            return `<div class="today">${d.emoji} ${d.name} — TODAY</div>`;
+        }
+        return `<div>${d.emoji} ${d.name}</div>`;
+    }).join("");
+
+    if (todayValentine) {
+        message.innerText = `Happy ${todayValentine.name}, Chiggy 💕`;
+    } else {
+        message.innerText = "";
     }
-    return `<div>${d.emoji} ${d.name}</div>`;
-}).join("");
 
-// Valentine wish
-if (todayValentine) {
-    message.innerText = `Happy ${todayValentine.name}, Chiggy 💕`;
+    tomorrowNote.innerText =
+        "If you open this website tomorrow, you’ll get the next day’s wish 💕";
 }
 
-tomorrowNote.innerText =
-    "If you open this website tomorrow, you’ll get the next day’s wish 💕";
+// Run once on load
+updateDayContent();
+
+/* =========================
+   MIDNIGHT AUTO-SWITCH (IST)
+========================= */
+function scheduleMidnightUpdate() {
+    const now = getISTDate();
+
+    const nextMidnight = new Date(now);
+    nextMidnight.setHours(24, 0, 0, 0);
+
+    const msUntilMidnight = nextMidnight - now;
+
+    setTimeout(() => {
+        updateDayContent();
+        scheduleMidnightUpdate(); // schedule next day
+    }, msUntilMidnight);
+}
+
+scheduleMidnightUpdate();
 
 /* =========================
    NO BUTTON — FOREVER DODGE
@@ -81,7 +114,6 @@ function moveNo() {
     cat.classList.add("sad");
     setTimeout(() => cat.classList.remove("sad"), 600);
 
-    // Encourage YES
     yesBtn.style.transform = "translateY(-6px)";
     yesHint.style.opacity = 1;
 
@@ -98,7 +130,6 @@ noBtn.addEventListener("click", (e) => {
     moveNo();
 });
 
-// Dodge before touching
 document.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
     const distance = Math.hypot(
