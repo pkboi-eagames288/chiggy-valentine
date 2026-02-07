@@ -29,7 +29,7 @@ const dayNames = [
 const todayName = dayNames[today.getDay()];
 const todayDate = today.toDateString();
 
-dayWish.innerHTML = `Good ${todayName}, Vedashree 💖<br><small>${todayDate} (IST)</small>`;
+dayWish.innerHTML = `Happy ${todayName}!, Veda 💖<br><small>${todayDate} (IST)</small>`;
 
 /* =========================
    VALENTINE DAY DETECTION
